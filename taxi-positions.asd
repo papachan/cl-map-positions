@@ -8,7 +8,6 @@
                 :serial t
                 :components
                 ((:file "package")
-                 (:file "server")
-                 (:file "positions"))))
+                 (:file "positions")
+                 (:file "server"))))
   :description "")
-
