@@ -5,17 +5,21 @@
   (:export :get-positions :range))
 (in-package :positions)
 
-(defun range (max &key (min 0) (step 1))
-   (loop for n from min below max by step
-      collect n))
+(defun get-random-coord (max)
+  (loop repeat max
+     collect (format nil "~,5@F" (random 1d0))))
 
-(defun transform (a b)
-  (let ((r (/ (float 111300) (float 1000)))
-        (w (* r (isqrt a)))
-        (t (* 2 Pi b)))
-    (* w (cos t) (* w (sin t)))))
+(defun transform-coord (u v)
+  (let ((w nil)
+        (x nil)
+        (r (/ (float 111300) (float 1000))))
+    (setf w (* r (sqrt u)))
+    (setf x (* 2 Pi v))
+    (values
+     (* w (cos x))
+     (* w (sin x)))))
 
 (defun get-positions ()
-  (loop for x in (range 10 :min 0 :step 1)
-     do (print (transform (random 1d0) (random 1d0)))))
-
+  (loop for x in (get-positions 3)
+     do
+       (print (read-from-string x))))
