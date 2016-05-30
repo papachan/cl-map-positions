@@ -19,7 +19,7 @@
 
 (define-easy-handler (home :uri "/") ()
   (setf (hunchentoot:content-type*) "text/html")
-  (with-open-file (stream "../public/index.html" :direction :input)
+  (with-open-file (stream "public/index.html" :direction :input)
     (slurp-stream stream)))
 
 (define-easy-handler (hosts-handler :uri "/positions") ()
