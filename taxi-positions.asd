@@ -3,7 +3,8 @@
   :author "<papachan@gmail.com>"
   :license "MIT"
   :depends-on (:hunchentoot
-               :cl-who)
+               :cl-who
+               :jsown)
   :components ((:module "src"
                 :serial t
                 :components
