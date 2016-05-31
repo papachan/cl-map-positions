@@ -20,6 +20,6 @@
      (* w (sin x)))))
 
 (defun get-positions ()
-  (loop for x in (get-positions 3)
+  (loop for x in (get-random-coord 3)
      do
        (print (read-from-string x))))
