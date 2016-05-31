@@ -15,21 +15,44 @@
   </div>
 <script src="https://maps.googleapis.com/maps/api/js?v=3.exp"></script>
 <script type="text/javascript">
+
   var map;
+  var uri = "/positions"
 
-  function addMarkers (){
-    marker = new google.maps.Marker({map: map,position: new google.maps.LatLng(4.649900, -74.090800)});
+  function loadPositions() {
+    var xmlhttp;
+    xmlhttp = new XMLHttpRequest();
+    xmlhttp.onreadystatechange = function() {
+        if (xmlhttp.readyState == XMLHttpRequest.DONE ) {
+           if(xmlhttp.status == 200){
+               console.log(xmlhttp.responseText);
+               arr = JSON.parse(xmlhttp.responseText);
+               addMarkers(arr);
+           }
+           else {
+               alert('something else other than 200 was returned')
+           }
+        }
+    };
+    xmlhttp.open("GET", uri, true);
+    xmlhttp.send();
   }
-  function init_map() {
-  var latlng = new google.maps.LatLng(4.649900, -74.090800);
-  var myOptions = {
-    center: latlng,
-    mapTypeId: google.maps.MapTypeId.ROADMAP,
-    zoom: 15,
-  };
 
-  map = new google.maps.Map(document.getElementById('map'), myOptions);
-  addMarkers();
+  function addMarkers (a) {
+    for(var i=0; i<a.length; i++) {
+      new google.maps.Marker({map: map,position: new google.maps.LatLng(a[i][0], a[i][1])});
+    }
+  }
+
+  function init_map() {
+    var latlng = new google.maps.LatLng(4.649900, -74.090800);
+    var myOptions = {
+      center: latlng,
+      mapTypeId: google.maps.MapTypeId.ROADMAP,
+      zoom: 12,
+    };
+    map = new google.maps.Map(document.getElementById('map'), myOptions);
+    loadPositions(this);
   }
   google.maps.event.addDomListener(window, 'load', init_map);
 </script>
