@@ -24,7 +24,7 @@
 
 (define-easy-handler (hosts-handler :uri "/positions") ()
   (setf (hunchentoot:content-type*) "application/json")
-  (format nil "{}"))
+  (positions:to-output))
 
 (defun run-hunchentoot (&key (port 8080))
   (defvar *default-acceptor* (make-instance 'easy-acceptor :port port

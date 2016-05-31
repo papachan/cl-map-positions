@@ -1,17 +1,14 @@
 ;;;; -*- Mode: Lisp; Syntax: Common-Lisp -*-
 (in-package :cl-user)
 (defpackage :positions
-  (:use :cl)
-  (:export :get-positions :range))
+  (:use :cl :jsown)
+  (:export :get-rand-positions
+           :to-output))
 (in-package :positions)
 
-(defun get-random-coord (max)
-  (loop repeat max
-     collect (format nil "~,5@F" (random 1d0))))
-
 (defun transform-coord (u v)
-  (let ((w nil)
-        (x nil)
+  (let ((w)
+        (x)
         (r (/ (float 111300) (float 1000))))
     (setf w (* r (sqrt u)))
     (setf x (* 2 Pi v))
@@ -19,7 +16,36 @@
      (* w (cos x))
      (* w (sin x)))))
 
-(defun get-positions ()
-  (loop for x in (get-random-coord 3)
-     do
-       (print (read-from-string x))))
+(defun get-random-coord (max)
+  (loop repeat max
+     collect (read-from-string (format nil "~,5@F" (* .1 (random 1d0))))))
+
+(defun rand ()
+  (read-from-string
+   (format nil "~,5@F" (* .1 (random 1d0)))))
+
+; center
+; 4.649900 -74.090800
+;;4.6486259,-74.2482375
+;; generate a new vector
+(defun build-vector (max)
+  (loop repeat max
+     collect
+       (vector (- 4.72 (rand))
+               (- -74.04 (rand)))))
+
+(defun get-rand-positions (count)
+  (let ((old)
+        (result))
+    (loop for x in (get-random-coord (* 2 count))
+       do
+         (setf old x)
+         (push (transform-coord x old) result))
+    result))
+
+;; result calling from Ajax
+(defun to-output ()
+  (jsown:to-json (build-vector 40)))
+
+(defvar *my-vec* (build-vector 20))
+(print (jsown:to-json *my-vec*))
