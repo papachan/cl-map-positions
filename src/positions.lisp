@@ -2,8 +2,9 @@
 (in-package :cl-user)
 (defpackage :positions
   (:use :cl :jsown)
-  (:export :get-rand-positions
-           :to-output))
+  (:export
+   :build-vector
+   :to-output))
 (in-package :positions)
 
 (defun transform-coord (u v)
@@ -24,9 +25,6 @@
   (read-from-string
    (format nil "~,5@F" (* .1 (random 1d0)))))
 
-; center
-; 4.649900 -74.090800
-;;4.6486259,-74.2482375
 ;; generate a new vector
 (defun build-vector (max)
   (loop repeat max
