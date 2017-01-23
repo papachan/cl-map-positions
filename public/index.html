@@ -20,13 +20,13 @@
   var uri = "/positions"
 
   function loadPositions() {
-    var xmlhttp;
-    xmlhttp = new XMLHttpRequest();
-    xmlhttp.onreadystatechange = function() {
-        if (xmlhttp.readyState == XMLHttpRequest.DONE ) {
-           if(xmlhttp.status == 200){
-               console.log(xmlhttp.responseText);
-               arr = JSON.parse(xmlhttp.responseText);
+    var http;
+    http = new XMLHttpRequest();
+    http.onreadystatechange = function() {
+        if (http.readyState == XMLHttpRequest.DONE ) {
+           if(http.status == 200){
+               console.log(http.responseText);
+               arr = JSON.parse(http.responseText);
                addMarkers(arr);
            }
            else {
@@ -34,8 +34,8 @@
            }
         }
     };
-    xmlhttp.open("GET", uri, true);
-    xmlhttp.send();
+    http.open("GET", uri, true);
+    http.send();
   }
 
   function addMarkers (a) {

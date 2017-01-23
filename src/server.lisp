@@ -11,6 +11,9 @@
            :stop-hunchentoot))
 (in-package :server)
 
+(defun filepath (filename)
+   (asdf:system-relative-pathname :taxi-positions filename))
+
 (defun slurp-stream(stream)
   ;; Credit: http://www.emmett.ca/~sabetts/slurp.html
   (let ((seq (make-string (file-length stream))))
@@ -19,15 +22,17 @@
 
 (define-easy-handler (home :uri "/") ()
   (setf (hunchentoot:content-type*) "text/html")
-  (with-open-file (stream "public/index.html" :direction :input)
+  (with-open-file (stream (filepath "public/index.html") :direction :input)
     (slurp-stream stream)))
 
 (define-easy-handler (hosts-handler :uri "/positions") ()
   (setf (hunchentoot:content-type*) "application/json")
   (positions:to-output))
 
+(defvar *default-acceptor* nil)
+
 (defun run-hunchentoot (&key (port 8080))
-  (defvar *default-acceptor* (make-instance 'easy-acceptor :port port
+  (setf *default-acceptor* (make-instance 'easy-acceptor :port port
                                             :document-root "public/"))
   (hunchentoot:start *default-acceptor*)
   (format t "~&;; Starting web server on localhost:~A." port))
